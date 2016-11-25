@@ -11,13 +11,13 @@ item            : LIST string;
 string          : (inline_string | inline_highlight) (WS+(inline_string | inline_command | inline_highlight))*;
 inline_command  : OPERATOR id 
                 | OPERATOR id BEGIN text_fragemnet END;
-inline_string   : WS* CHAR+ (WS | SYMBOL | CHAR | ESCAPE)*;
+inline_string   : WS* CHAR+ (WS | SYMBOL | CHAR | LIST | HDR | BEGIN | END | QUOTE | ESCAPE)*;
 
 inline_highlight: HIGHLIGHT text_fragemnet HIGHLIGHT; 
 
 text_fragemnet  : (WS | SYMBOL | CHAR | ESCAPE)*;
 
-id              : CHAR+ | (QUOTE (WS | SYMBOL | CHAR | ESCAPE)* QUOTE);
+id              : CHAR+ | (QUOTE (WS | SYMBOL | CHAR | LIST | HDR | HIGHLIGHT | BEGIN | END | OPERATOR | ESCAPE)* QUOTE);
 command         : OPERATOR id (WS id)* WS*;
 header          : HDR (WS | SYMBOL | CHAR | ESCAPE)*;
 
