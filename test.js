@@ -37,4 +37,4 @@ var sense = new Sense({
     }
 });
 
-sense.makeFile("./test.ms");
+sense.makeFile("./test.sns");

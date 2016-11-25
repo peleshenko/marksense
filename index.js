@@ -168,7 +168,7 @@ Listener.prototype = Object.create(sensListener.marksenseListener.prototype);
 Listener.prototype.constructor = Listener;
 
 Listener.prototype.makeFile = function(path) {
-    var input = fs.readFileSync("test.ms", { encoding: "utf8" });
+    var input = fs.readFileSync(path, { encoding: "utf8" });
     return this.make(input);
 }
 
@@ -259,6 +259,10 @@ Listener.prototype.exitString = function(ctx) {
                             .map(x => x.value);
 }
 
+Listener.prototype.exitPre_block = function(ctx) {
+    ctx.value = [new Fragment(null, [], ctx.getText().slice(1, -1))];
+}
+
 Listener.prototype.exitInline_command = function(ctx) {
     var command = ctx.children[1].getText();
     var content = ctx.children.length > 2 ? ctx.children[3].getText() : null;
@@ -274,7 +278,11 @@ Listener.prototype.exitInline_highlight = function(ctx) {
 }
 
 Listener.prototype.exitInline_string = function(ctx) {
-    ctx.value = new Fragment("", [], ctx.getText().trimLeft()); 
+    ctx.value = new Fragment("", 
+        [], 
+        ctx.getText()
+           .trimLeft()
+           .replace(/\\\n/g,"\n")); 
     this.handlers.fragment(ctx.value);
 }
 
