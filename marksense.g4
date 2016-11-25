@@ -2,7 +2,7 @@ grammar marksense;
 
 program         : block*;
 block           : (command_block | text_block | header_block);
-command_block   : command (NL line)* NL WS* (NL WS*)+ | command EOF;
+command_block   : command (NL line)* NL WS* (NL WS*)+ | command (NL WS*)* EOF;
 text_block      : (string | item) (NL line)* (NL WS* (NL WS*)+ | NL? WS* EOF);
 header_block    : header NL+ | header EOF;
 

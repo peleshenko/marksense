@@ -7,6 +7,10 @@ const fs = require("fs");
 
 var Document = function(blocks){
     this.blocks = blocks;
+    // this.text = "";
+    // for(var i in this.blocks){
+    //     this.text += this.blocks[i].text + "\n";
+    // }
 }
 
 Document.prototype.texts = function() {
@@ -164,35 +168,13 @@ Listener.prototype = Object.create(sensListener.marksenseListener.prototype);
 Listener.prototype.constructor = Listener;
 
 Listener.prototype.makeFile = function(path) {
-    this.document = null;
     var input = fs.readFileSync("test.ms", { encoding: "utf8" });
-    var chars = new antlr4.InputStream(input);
-    var lexer = new sensLexer.marksenseLexer(chars);
-    var tokens  = new antlr4.CommonTokenStream(lexer);
-    var parser = new sensParser.marksenseParser(tokens);
-    var errors = [];
-    parser.addErrorListener({
-        syntaxError: function(r, o, line, pos, msg, e){
-            errors.push({
-                line: line,
-                position: pos,
-                message: msg
-            });
-        },
-        reportAttemptingFullContext : function (){},
-        reportContextSensitivity: function(){},
-        reportAmbiguity: function(){}
-    });
-    parser.buildParseTrees = true;
-
-    var tree = parser.program();
-    if(!errors.length){
-        antlr4.tree.ParseTreeWalker.DEFAULT.walk(this, tree);
-    }
+    return this.make(input);
 }
 
 Listener.prototype.make = function(input) {
     this.document = null;
+    this.input = input;
     var chars = new antlr4.InputStream(input);
     var lexer = new sensLexer.marksenseLexer(chars);
     var tokens  = new antlr4.CommonTokenStream(lexer);
@@ -216,6 +198,7 @@ Listener.prototype.make = function(input) {
     if(!errors.length){
         antlr4.tree.ParseTreeWalker.DEFAULT.walk(this, tree);
     }
+    return this.document;
 }
 
 Listener.prototype.enterProgram = function(ctx) {
@@ -224,6 +207,7 @@ Listener.prototype.enterProgram = function(ctx) {
 
 Listener.prototype.exitProgram = function(ctx) {
     this.document = new Document(ctx.children.map(x => x.value));
+    this.document.text = this.input;
     this.handlers.document(this.document);
 }
 

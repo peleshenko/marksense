@@ -1,0 +1,7 @@
+typings
+*.tokens
+.vscode
+typings.json
+jsconfig.json
+test.json
+*.g4
