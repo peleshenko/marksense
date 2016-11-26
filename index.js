@@ -241,6 +241,9 @@ Listener.prototype.exitHeader_block = function(ctx) {
 
 Listener.prototype.exitLine = function(ctx) {
     ctx.value = ctx.children[0].value;
+    ctx.value.text = ctx.children[0].value.map(x => x.text).join(" ");
+    if(ctx.children[0].command)
+        this.handlers.fragment(ctx.children[0].value[0]);    
     this.handlers.line(ctx.value);
 }
 
@@ -292,6 +295,7 @@ Listener.prototype.exitCommand = function(ctx) {
                    .map(x => x.value);
     
     var name = parts.shift();
+    ctx.command = true;
     ctx.value = [new Fragment(name, parts, null)];
 }
 

@@ -2,7 +2,7 @@ grammar marksense;
 
 program         : block*;
 block           : (command_block | text_block | header_block);
-command_block   : command (NL line)* ((NL WS* (NL WS*)+) | EOF);
+command_block   : command (NL line)* ((NL WS* (NL WS*)+) | (NL WS*)* EOF);
 text_block      : (string | item) (NL line)* (NL WS* (NL WS*)+ | NL? WS* EOF);
 header_block    : header NL+ | header EOF;
 
@@ -11,19 +11,23 @@ item            : LIST string;
 string          : (inline_string | inline_highlight) (WS+(inline_string | inline_command | inline_highlight))*;
 inline_command  : OPERATOR id 
                 | OPERATOR id BEGIN text_fragemnet END;
-inline_string   : WS* CHAR+ (WS | SYMBOL | CHAR | LIST | HDR | BEGIN | END | QUOTE | ESCAPE)*;
+inline_string   : WS* CHAR+ (WS | SYMBOL | CHAR | LIST | HDR | BEGIN | END | QUOTE | ESCAPE | ESCAPENL)*;
 
 inline_highlight: HIGHLIGHT text_fragemnet HIGHLIGHT; 
 
 text_fragemnet  : (WS | SYMBOL | CHAR | ESCAPE)*;
 
-id              : CHAR+ | (QUOTE (WS | SYMBOL | CHAR | LIST | HDR | HIGHLIGHT | BEGIN | END | OPERATOR | ESCAPE)* QUOTE);
-command         : OPERATOR id (WS id)* WS*;
+id              : CHAR+ 
+                | (QUOTE (WS | SYMBOL | CHAR | LIST | HDR | HIGHLIGHT | BEGIN | END | OPERATOR | ESCAPE | ESCAPENL)* QUOTE)
+                | pre_block;
+
+command         : OPERATOR id ((ESCAPENL | WS)+ id)* WS*;
 header          : HDR (WS | SYMBOL | CHAR | ESCAPE)*;
 
 pre_block       : 
     PRE 
                 ( ESCAPE 
+                | ESCAPENL
                 | OPERATOR 
                 | HDR 
                 | NL 
@@ -38,7 +42,8 @@ pre_block       :
     PRE; 
 
 // Lexer rules
-ESCAPE      : '\\(' | '\\)' | '\\"' | '\\:' | '\\-' | '\\*' | '\\#' | ('\\' NL) | '\\`';
+ESCAPENL    : ('\\' '\n');
+ESCAPE      : '\\(' | '\\)' | '\\"' | '\\:' | '\\-' | '\\*' | '\\#' | '\\`';
 OPERATOR    : ':';
 HDR         : '#'+ ('\t'|' ')*;
 NL          : '\n';

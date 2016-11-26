@@ -1,18 +1,11 @@
-:question Prototypes
-Add missing parts to make following code to output "Hello John Doe!" into the console
-
-:code js
+:question "Variables"
+What value will be printed in console?
+:code js \
 `
-...=function(){
-    return "Hello " + ... + '!';
-};
+(function() {
+   var a = b = 5;
+})();
 
-console.log("John Doe".hello());
+console.log(b);
 `
-
-:answers 
-String.prototype.hello, this 
-this, getValue()
-String.__proto__.hello, value
-String.prototype.hello, argv[0]
-String.hello, this
+:answer 5
