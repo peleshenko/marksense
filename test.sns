@@ -1,11 +1,13 @@
 :question "Variables"
-What value will be printed in console?
-:code js \
-`
-(function() {
-   var a = b = 5;
-})();
+    What value will be printed in console?
+    
+    :code js 
+    `
+    (function() {
+    var a = b = 5;
+    })();
 
-console.log(b);
-`
-:answer 5
+    console.log(b);
+    `
+    
+    :answer 5

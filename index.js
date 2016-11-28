@@ -263,7 +263,15 @@ Listener.prototype.exitString = function(ctx) {
 }
 
 Listener.prototype.exitPre_block = function(ctx) {
-    ctx.value = [new Fragment(null, [], ctx.getText().slice(1, -1))];
+    var tabSize = ctx.children[0].getText().length - 1; 
+    var text = ctx.getText();
+    var lines = text.split("\n");
+    ctx.value = [new Fragment(
+        "", 
+        [], 
+        lines.slice(1, -1)
+             .map(x => x.slice(tabSize))
+             .join("\n"))];
 }
 
 Listener.prototype.exitInline_command = function(ctx) {

@@ -1,14 +1,19 @@
 {
   "name": "marksense",
-  "version": "0.1.12",
+  "version": "0.2.3",
   "description": "Special markup language",
   "main": "index.js",
+  "repository": "https://github.com/peleshenko/marksense",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/mocha/bin/mocha tests.js"
   },
   "author": "Dmitry Peleshenko",
   "license": "ISC",
   "dependencies": {
     "antlr4": "^4.5.3"
+  },
+  "devDependencies": {
+    "mocha": "^3.2.0",
+    "unit.js": "^2.0.0"
   }
 }

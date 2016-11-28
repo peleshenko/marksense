@@ -11,7 +11,7 @@ item            : LIST string;
 string          : (inline_string | inline_highlight) (WS+(inline_string | inline_command | inline_highlight))*;
 inline_command  : OPERATOR id 
                 | OPERATOR id BEGIN text_fragemnet END;
-inline_string   : WS* CHAR+ (WS | SYMBOL | CHAR | LIST | HDR | BEGIN | END | QUOTE | ESCAPE | ESCAPENL)*;
+inline_string   : WS* CHAR+ (WS | SYMBOL | CHAR | LIST | HDR | BEGIN | END | QUOTE | ESCAPE | ESCAPENL | OPERATOR WS)*;
 
 inline_highlight: HIGHLIGHT text_fragemnet HIGHLIGHT; 
 
@@ -21,11 +21,11 @@ id              : CHAR+
                 | (QUOTE (WS | SYMBOL | CHAR | LIST | HDR | HIGHLIGHT | BEGIN | END | OPERATOR | ESCAPE | ESCAPENL)* QUOTE)
                 | pre_block;
 
-command         : OPERATOR id ((ESCAPENL | WS)+ id)* WS*;
-header          : HDR (WS | SYMBOL | CHAR | ESCAPE)*;
+command         : WS* OPERATOR id ((ESCAPENL | WS)+ id)* WS*;
+header          : WS* HDR (WS | SYMBOL | CHAR | ESCAPE)*;
 
 pre_block       : 
-    PRE 
+    pre_start 
                 ( ESCAPE 
                 | ESCAPENL
                 | OPERATOR 
@@ -39,7 +39,9 @@ pre_block       :
                 | END
                 | LIST
                 | SYMBOL)*
-    PRE; 
+    pre_start; 
+
+pre_start       : WS* PRE;
 
 // Lexer rules
 ESCAPENL    : ('\\' '\n');
