@@ -18,7 +18,7 @@ inline_highlight: HIGHLIGHT text_fragemnet HIGHLIGHT;
 text_fragemnet  : (WS | SYMBOL | CHAR | ESCAPE)*;
 
 id              : CHAR+ 
-                | (QUOTE (WS | SYMBOL | CHAR | LIST | HDR | HIGHLIGHT | BEGIN | END | OPERATOR | ESCAPE | ESCAPENL)* QUOTE)
+                | QUOTE (WS | SYMBOL | CHAR | LIST | HDR | HIGHLIGHT | BEGIN | END | OPERATOR | ESCAPE | ESCAPENL)* QUOTE
                 | pre_block;
 
 command         : WS* OPERATOR id ((ESCAPENL | WS)+ id)* WS*;

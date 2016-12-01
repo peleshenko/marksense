@@ -233,7 +233,7 @@ Listener.prototype.exitText_block = function(ctx) {
 Listener.prototype.exitHeader_block = function(ctx) {
     var text = ctx.children[0].value.map(x => x.text).join("");
     ctx.value = new Block(
-        ctx.children[0].value[0].command,
+        "#",
         [text, ctx.children[0].value[0].headerLevel()],  
         [ctx.children[0].value],
         text);
@@ -308,9 +308,14 @@ Listener.prototype.exitCommand = function(ctx) {
 }
 
 Listener.prototype.exitId = function(ctx) {
-    ctx.value = ctx.getText();
-    if(ctx.value.startsWith('"') && ctx.value.endsWith('"'))
-        ctx.value = ctx.value.substr(1, ctx.value.length - 2);
+    // Handle pre_block in ID
+    if(ctx.children[0].value) {
+        ctx.value = ctx.children[0].value[0].text;
+    } else {
+        ctx.value = ctx.getText();
+        if(ctx.value.startsWith('"') && ctx.value.endsWith('"'))
+            ctx.value = ctx.value.substr(1, ctx.value.length - 2);
+    }
 }
 
 Listener.prototype.exitHeader = function(ctx) {
