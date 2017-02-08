@@ -1,5 +1,5 @@
-:question "Variables"
-    What value will be printed in console?
+:question "Variables" 
+    <What value will be printed in console?
     
     :code js 
     `

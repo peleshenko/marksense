@@ -4,4 +4,8 @@ typings
 typings.json
 jsconfig.json
 test.json
+test.sns
+test.js
+tests.js
+generate-parser.sh
 *.g4
