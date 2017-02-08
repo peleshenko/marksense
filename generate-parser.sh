@@ -1,0 +1,1 @@
+antlr4 -Dlanguage=JavaScript marksense.g4
